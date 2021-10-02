@@ -1,4 +1,4 @@
-# businessforecasting
+# Gasoline Prices and Consumer Behavior
 
 This group project seeks to understand the effect of gasoline prices on consumer behavior: namely, to compare gasoline prices to the number of registrations of conventional cars, sales of Hybrid Electric Vehicles (HEVs), and vehicle fuel consumption (all in the U.S.). We will use reported data tracked on a monthly basis from January 2000 through December 2017. Our task is to forecast 2018 based on analysis of past performance using R. We will measure the accuracy of the forecast by comparing our results to actual data published for 2018 using the RMSE.
 
