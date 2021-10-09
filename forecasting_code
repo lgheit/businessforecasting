@@ -6,14 +6,13 @@ attributes(op) #Show type
 summary(op$PRICE) #mean, min etc
 op_ts = ts(op$PRICE, start = 2000, end = c(2017,12), frequency = 12)
 plot(op_ts)
-Acf(op_ts) #Corelellogram 
+Acf(op_ts) #Correlogram 
 #mean_f
-mean_forecast = meanf(op_ts, h=4, level = c(20,40)) #mean forecast, level gives confidence interval
+mean_forecast = meanf(op_ts, h=4, level = c(20,40)) #mean forecast, and level gives confidence interval
 plot(mean_forecast)
 lines(mean_forecast$fitted, col="red") #plotting the graph over the original graph, we used $fitted to get the graph
 accuracy(mean_forecast)
 #naive 
-accuracy(naive_forecast)
 naive_forecast = naive(op_ts, 12)
 lines(naive_forecast$fitted, col="green")
 accuracy(naive_forecast)
@@ -34,9 +33,9 @@ ets_forecast = ets(op_ts, h=4)
 forecast_ets = forecast.ets(ets_forecast,h=4)
 plot(forecast_ets)
 #holt_winters
-hw_forecast= HoltWinters(op_ts)
+hw_forecast = HoltWinters(op_ts)
 plot(hw_forecast)
 #decomp
 decomp=stl(op_ts,s.window = "periodic")
-#seasonla adjustment
+#seasonal adjustment
 SA_ts = seasadj(decomp)
