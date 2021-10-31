@@ -39,3 +39,11 @@ plot(hw_forecast)
 decomp=stl(op_ts,s.window = "periodic")
 #seasonal adjustment
 SA_ts = seasadj(decomp)
+#Multiple regression using Car Registration data, Electric Vehicle Sales, and Gas Consumption Data
+view(op_mr)
+cor(op_mr)
+op_mr_log <- data.frame(Price=op_mr$Price, log.reg=log(op_mr$Registration+1),log.es=log(op_mr$Electric_Sales+1),log.cons=log(op_mr$Consumption+1))
+pairs(op_mr_log[,1:4])
+mfit <- step(lm(Price ~ log.reg + log.es + log.cons,data=op_mr_log))
+summary(mfit)
+plot(fitted(mfit), op_mr_log$Price, ylab="Price", xlab="Predicted Price")
