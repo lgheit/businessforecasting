@@ -193,12 +193,42 @@ accuracy(forecast_hw, x=true)
 accuracy(forecast_arima, x=true)
 
 #MULTIPLE REGRESSION
+library(fpp)
+libary(fpp2)
+library(VIF)
 op_mr <- read_csv("~/Desktop/op_mr.csv")
-view(op_mr)
+View(op_mr)
+#Correlation Matrix
 cor(op_mr)
-pairs(op_mr[,-(4:4)])
-op_mr_log <- data.frame(Price=op_mr$Price, log.reg=log(op_mr$Registration+1),log.es=log(op_mr$Electric_Sales+1),log.cons=log(op_mr$Consumption+1))
+attributes(op_mr)
+pairs(op_mr)
+#Log Transformation
+op_mr_log <- data.frame(Price=op_mr$Price,log.reg=log(op_mr$Registration+1),log.elec_sales=log(op_mr$Electric_Sales+1),log.consumption=log(op_mr$Consumption+1))
+#To look at correlation
+pairs(op_mr_log)
 pairs(op_mr_log[,1:4])
-mfit <- step(lm(Price ~ log.reg + log.es + log.cons,data=op_mr_log))
+mfit <- step(lm(Price ~ log.reg + log.elec_sales + log.consumption,data=op_mr_log))
 summary(mfit)
-plot(fitted(mfit), op_mr_log$Price, ylab="Price", xlab="Predicted Price")
+#Original vs Predicted
+plot(fitted(mfit), op_mr_log$Price,
+     +      ylab="Price", xlab="Predicted Price")
+#Plot 2 by 2
+par(mfrow=c(2,2))
+plot(op_mr_log$log.elec_sales,residuals(mfit),xlab="log(EV Sales)")
+plot(op_mr_log$log.consumption,residuals(mfit),xlab="log(Consumption)")
+plot(op_mr_log$log.reg,residuals(mfit),xlab="log(Registrations)")
+#Plot of one column one row 
+par(mfrow=c(1,1))
+plot(fitted(mfit), residuals(mfit),
+     xlab="Predicted Price", ylab="Residuals")
+#VIF values for each predictors
+vif(mfit)
+plot(mfit)
+influence.measures(mfit)
+#Cook's distance
+cooks.distance(mfit)
+#Leverage
+hatvalues(mfit)
+l_val = hatvalues(mfit)                 
+plot(l_val)
+summary(l_val)
